@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1070196937336",
+    "project_id": "livetrack-575de",
+    "storage_bucket": "livetrack-575de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070196937336:android:4ff2bdaee3e913722f538d",
+        "android_client_info": {
+          "package_name": "ke.posta.livetrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070196937336-mmo19irp92me5m6ftg4t2g284oeup3ra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1ZEtxyBRsJUMOHZGPuB3CwZCa-5NBYAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070196937336-mmo19irp92me5m6ftg4t2g284oeup3ra.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
