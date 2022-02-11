@@ -78,12 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CHECK_SETTINGS = 11;
 
  //   private static final float DEFAULT_ZOOM = 17;
-    Double distance;
-
-    TextView distance_est;
-
-    LatLng pickUpLatLng;
-    LatLng deliveryLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +88,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -104,11 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
-
-
         }
-
-
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -117,10 +106,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-
-      //  getLocationUpdate();
     }
 
     /**
@@ -134,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
 
         MapStyleOptions mapStyleOptions = MapStyleOptions.loadRawResourceStyle(this, R.raw.googlemap_json);
@@ -160,8 +144,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(NEW_PLACE,zoomLevel));
         **/
-
-
     }
 
     @Override
@@ -169,12 +151,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // location.getLatitude();
        // location.getLongitude();
         Log.d(TAG, "onLocationChanged: "+location.getLatitude()+" "+location.getLongitude());
+        mMap.clear();
         NEW_PLACE = new LatLng(location.getLatitude(), location.getLongitude());
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(NEW_PLACE, zoomLevel);
         if(mMap != null) {
             mMap.animateCamera(cameraUpdate);
+            mMap.addMarker(new MarkerOptions().position(NEW_PLACE).title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(NEW_PLACE));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(NEW_PLACE,zoomLevel));
         }
+
+//        if(ourGlobalMarker == null) { // First time adding marker to map
+//            ourGlobalMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+//            MarkerAnimation.animateMarkerToICS(ourGlobalMarker, latLng, new LatLngInterpolator.Spherical());
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+//        } else {
+//            MarkerAnimation.animateMarkerToICS(ourGlobalMarker, latLng, new LatLngInterpolator.Spherical());
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+//        }
     }
 
     @Override
