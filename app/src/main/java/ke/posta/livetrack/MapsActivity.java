@@ -47,6 +47,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,9 +84,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
  //   private static final float DEFAULT_ZOOM = 17;
 
+    private DatabaseReference databaseReference;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+       // FirebaseDatabase.getInstance().getReference().setValue("live track data app");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("user_101");
 
         createLocationRequest();
         getLocationPermissions();
@@ -106,6 +118,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
+
     }
 
     /**
@@ -171,11 +187,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            MarkerAnimation.animateMarkerToICS(ourGlobalMarker, latLng, new LatLngInterpolator.Spherical());
 //            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 //        }
-    }
 
-    @Override
-    public void onLocationChanged(@NonNull List<Location> locations) {
-        LocationListener.super.onLocationChanged(locations);
+    //    databaseReference.setValue(location);
+
+        CurrentLocation currentLocation = new CurrentLocation(location.getLatitude(), location.getLongitude());
+// pushing user to 'users' node using the userId
+        databaseReference.child("user_101").setValue(currentLocation);
+
+        databaseReference.child("user_101").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CurrentLocation currentLocation = snapshot.getValue(CurrentLocation.class);
+
+                if (currentLocation != null){
+                    Log.d(TAG, "onDataChange: "+currentLocation.getLat());
+                } else {
+                    Log.d(TAG, "onDataChange: "+" NOT FOUND");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: "+error);
+            }
+
+
+        });
+
+
     }
 
     @Override
